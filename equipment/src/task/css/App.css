@@ -1,0 +1,15 @@
+.wrapper {
+    display: flex;
+    background-color: beige;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 722px;
+}
+
+#inventory {
+    min-width: 30%;
+}
+
+#places {
+    min-width: 40%;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+
+    <script>
+      let firebaseConfig = {
+          apiKey: "AIzaSyD6DnGbVfdJlDJ_pEOUfDfTDJrA8j3lIs8",
+          authDomain: "dv-inventory.firebaseapp.com",
+          databaseURL: "https://dv-inventory.firebaseio.com",
+          projectId: "dv-inventory",
+          storageBucket: "dv-inventory.appspot.com",
+          messagingSenderId: "130062240176",
+          appId: "1:130062240176:web:ecbca5d29b37d25c6cee75"
+      };
+
+      firebase.initializeApp(firebaseConfig);	
+      window.firebase = firebase;
+      window.firestore = window.firebase.firestore();
+
+      window.firestore.collection("places").get().then(response => { 
+          window.places = response.docs.map(x => ({ 
+                  id: x.id, 
+                  data: x.data(), 
+                  parts:  x.data().parts && x.data().parts.map(part => part.id) 
+          })); 
+
+          window.map = new Map(window.places.map(item => [item.id, item]));
+      });
+
+      window.firestore.collection("inventory").get().then(response => { 
+          window.inventory = response.docs.map(x => ({ 
+                  id: x.id, 
+                  data: x.data(), 
+                  placeId: x.data().place.id 
+          }));
+      });
+  </script>
+  </body>
+</html>
