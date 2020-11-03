@@ -2,38 +2,40 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Inventory from './Inventory';
 import GetInventory from './functions/GetInventory';
-import './css/Buttons.css';
-import './css/Form.css';
+import AddInventory from './AddInventory';
 
-function AddInventory(props) {
+function ChangeInventory(props) {
     const idPlace = props.idPlace;
-    const [name, setName] = useState(''); 
-    const [count, setCount] = useState('');
     
+    const [name, setName] = useState(props.value.split(';')[0]); 
+    const [count, setCount] = useState(props.value.split(';')[1]);
+    
+    function addInventory (event) {
+        ReactDOM.render(
+            <AddInventory idPlace={idPlace} id={event.target.id} value={event.target.value} />,
+            document.getElementById('change')
+        );
+    }
+
     function Render(id) {
         let res = window.inventory.filter(inventory => inventory.placeId === id);
         ReactDOM.render(
             <React.Fragment>
                 <Inventory inventory={res} />
-                <div id="change"><AddInventory idPlace={id} /></div>
             </React.Fragment>,
             document.getElementById('inventory')
         )
-        setName('');
-        setCount  ('');
     }
 
-    function onCreate(options) {
-        window.firestore.collection("inventory").doc().set({ 
-            name: options.name, 
-            count: options.count, 
-            place: window.firestore.collection("places").doc(options.idPlace)
+    function onChange(options) {
+        window.firebase.firestore().collection("inventory").doc(options.id).set({ 
+            name: options.name,
+            count: options.count
         }).then(() => {
             GetInventory();
             setTimeout(() => { 
                 Render(options.idPlace);
             }, 500);
-
         });        
     }
 
@@ -41,7 +43,8 @@ function AddInventory(props) {
         event.preventDefault(); 
 
         if (name.trim() && count.trim()) {
-            onCreate({
+            onChange({
+                id: props.id,
                 name: name,
                 count: count,
                 idPlace: idPlace
@@ -49,9 +52,12 @@ function AddInventory(props) {
         }
     }
 
-    return (
+    return(
         <React.Fragment>
-            <h3>Добавить</h3>
+            <button className="button button-add" onClick={addInventory}>
+                Добавить
+            </button>
+            <h3>Изменить</h3>
             <form onSubmit={submitHandler}>
                 <input className="input" value={name} onChange={event => setName(event.target.value)} />
                 <input className="input" value={count} onChange={event => setCount(event.target.value)} />
@@ -61,4 +67,4 @@ function AddInventory(props) {
     )
 }
 
-export default AddInventory;
+export default ChangeInventory;

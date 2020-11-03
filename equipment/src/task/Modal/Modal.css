@@ -7,13 +7,16 @@
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    padding-top: 20px;
+    padding-top: 150px;
+    z-index: 10;
 }
 
 .modal-body {
     padding: 20px;
-    width: 400px;
+    max-width: 700px;
+    min-height: 350px;
     background-repeat: 5px;
     background: #fff;
     height: 200px;
+    border-radius: 10px;
 }

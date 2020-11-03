@@ -1,4 +1,4 @@
-function buildTree(items, map) {
+export default function buildTree(items, map) {
     let mapMain = new Map();
     let childs = [];
 

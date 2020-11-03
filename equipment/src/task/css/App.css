@@ -1,9 +1,8 @@
 .wrapper {
     display: flex;
-    background-color: beige;
     justify-content: space-around;
     align-items: center;
-    min-height: 722px;
+    min-height: 600px;
 }
 
 #inventory {

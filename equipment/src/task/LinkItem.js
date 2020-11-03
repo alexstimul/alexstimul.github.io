@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Places from './Places';
 import Inventory from './Inventory';
 import AddInventory from './AddInventory';
-import GetInventory from './functions/GetInventory';
-import GetPlaces from './functions/GetPlaces';
+import './css/LinkItem.css';
 
 function GetAllPlacesId(element) {
     window.allchilds.push(element.id);
@@ -45,8 +43,8 @@ class LinkItem extends React.Component {
 
         ReactDOM.render(
             <React.Fragment>
-                <Inventory inventory={result} />
-                {!this.isHasChild && <AddInventory idPlace={this.place.id} />}
+                <Inventory idPlace={this.place.id} inventory={result}  isCanChange={!this.isHasChild} />
+                {!this.isHasChild && <div id="change"><AddInventory idPlace={this.place.id} /></div>}
             </React.Fragment>,
             document.getElementById('inventory')
         )
@@ -58,9 +56,10 @@ class LinkItem extends React.Component {
                 id={this.place.id} 
                 href="#"
                 onClick={this.showInventory}
-        >{this.place.data.name} {this.state.click ? this.state.empty ? 'Нет' : 'Да' : ''}   
-        </a>
-        
+                className="link"
+            >
+                {this.place.data.name} {this.state.click ? this.state.empty ? 'Нет' : 'Да' : ''}   
+            </a>
         );
     }
 }
